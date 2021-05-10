@@ -88,10 +88,35 @@ def linear_q_learning(theta, current_state_vector, action_index, object_index,
         None
     """
     # TODO Your code here
-    theta = None # TODO Your update here
 
     # https://stats.stackexchange.com/questions/187110/how-to-fit-weights-into-q-values-with-linear-function-approximation
     # https://www.baeldung.com/cs/epsilon-greedy-q-learning
+
+    # Renaming to shorter name
+    a_idx = action_index    # rename for shorter name for action index
+    o_idx = object_index    # rename for shorter name for object index
+
+    # Q(s,a,θ)
+    q_value = (theta @ current_state_vector)[tuple2index(a_idx, o_idx)]
+
+    # Q(s′,c′,θ)
+    parametrized_function = theta @ next_state_vector
+
+    if terminal:
+        max_q_value_next = 0
+    else:
+        max_q_value_next = np.max(parametrized_function)
+
+
+    #  y = R(s,c) + γmaxc′Q(s′,c′,θ)
+    y = reward + (GAMMA * max_q_value_next)
+
+    # phi(s,c) = current_state_vector
+    delta_theta = (y - q_value) * current_state_vector
+
+    # update theta
+    # θ	←θ+αg(θ)=θ+α[R(s,c)+γmaxc′Q(s′,c′,θ)−Q(s,c,θ)]ϕ(s,c)
+    theta[tuple2index(a_idx, o_idx)] = theta[tuple2index(a_idx, o_idx)] + (ALPHA * delta_theta)
 
 # pragma: coderesponse end
 
