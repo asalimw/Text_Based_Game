@@ -46,8 +46,27 @@ def epsilon_greedy(state_vector, theta, epsilon):
         (int, int): the indices describing the action/object to take
     """
     # TODO Your code here
+    # initial
     action_index, object_index = None, None
+
+    # Generate a non-uniform random result as if a were np.arange(a)
+    # https://www.sharpsightlabs.com/blog/numpy-random-choice/
+    result = np.random.choice(a=[0, 1], p=[epsilon, 1 - epsilon])
+
+    # optimal policy
+    if result == 1:
+        Q = np.inner(theta, state_vector)  # for each value of Q is superimposed by a state vector and theta (weighting)
+        # fetch max argument index by np.unravel_index
+        # https://www.geeksforgeeks.org/numpy-unravel_index-function-python/
+        index = np.unravel_index(np.argmax(Q, axis=None), Q.shape)[0]  # (n,) -> into numpy.int64
+        action_index, object_index = index2tuple(index)  # Converts an index c to a tuple (a,b)
+    # random select action-object
+    if result == 0:
+        action_index = np.random.randint(NUM_ACTIONS)
+        object_index = np.random.randint(NUM_OBJECTS)
+
     return (action_index, object_index)
+
 # pragma: coderesponse end
 
 
@@ -70,6 +89,10 @@ def linear_q_learning(theta, current_state_vector, action_index, object_index,
     """
     # TODO Your code here
     theta = None # TODO Your update here
+
+    # https://stats.stackexchange.com/questions/187110/how-to-fit-weights-into-q-values-with-linear-function-approximation
+    # https://www.baeldung.com/cs/epsilon-greedy-q-learning
+
 # pragma: coderesponse end
 
 
