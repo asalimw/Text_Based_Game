@@ -160,7 +160,6 @@ def run_episode(for_training):
             # TODO Your code here
             tabular_q_learning(q_func, current_state_1, current_state_2, action_index, object_index,
                                reward, next_state_1, next_state_2, terminal)
-
             pass
 
         if not for_training:
