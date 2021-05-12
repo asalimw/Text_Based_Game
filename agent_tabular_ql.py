@@ -59,6 +59,7 @@ def epsilon_greedy(state_1, state_2, q_func, epsilon):
         # fetch max argument index by np.unravel_index
         # https://www.geeksforgeeks.org/numpy-unravel_index-function-python/
         index = np.unravel_index(np.argmax(q_func[state_1, state_2], axis=None), q_func[state_1, state_2].shape)
+        # print (index)
         action_index = index[0]
         object_index = index[1]
     # random select action-object

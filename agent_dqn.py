@@ -28,6 +28,8 @@ NUM_OBJECTS = len(OBJECTS)
 model = None
 optimizer = None
 
+# https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html
+# https://medium.com/jun-devpblog/pytorch-2-a043b216fb29
 
 def epsilon_greedy(state_vector, epsilon):
     """Returns an action selected by an epsilon-greedy exploration policy
@@ -42,17 +44,22 @@ def epsilon_greedy(state_vector, epsilon):
     """
     # TODO Your code here
     # recall model by state_vector
-    act_arr, obj_arr = model(state_vector)
+    act_arr, obj_arr = model(state_vector)  # model is global variable
+    # print(act_arr, obj_arr)
 
     # random selection with assigned p
-    res = np.random.choice(a=[0, 1], p=[epsilon, 1 - epsilon])
+    # Generate a non-uniform random result as if a were np.arange(a)
+    # https://www.sharpsightlabs.com/blog/numpy-random-choice/
+    result = np.random.choice(a=[0, 1], p=[epsilon, 1 - epsilon])
+    # print(result)
 
     # optimal policy
-    if res == 1:
-        action_index = torch.argmax(act_arr)
-        object_index = torch.argmax(obj_arr)
+    if result == 1:
+        action_index = torch.argmax(act_arr)    # fetch max argument index for action
+        object_index = torch.argmax(obj_arr)    # fetch max argument index for object
+
     # random select action-object
-    if res == 0:
+    if result == 0:
         action_index = np.random.randint(0, NUM_ACTIONS)
         object_index = np.random.randint(0, NUM_OBJECTS)
 
@@ -96,13 +103,9 @@ def deep_q_learning(current_state_vector, action_index, object_index, reward,
     maxq_next = 1 / 2 * (q_values_action_next.max()
                          + q_values_object_next.max())
 
-    q_value_cur_state = model(current_state_vector)
+    q_value_cur_state = model(current_state_vector)     # model is global variable
 
     # TODO Your code here
-
-    # under Tensor class
-    maxq_next = 0.5 * (q_values_action_next.max() + q_values_object_next.max())
-
     # extract current value
     current = 0.5 * (q_value_cur_state[0][action_index] + q_value_cur_state[1][object_index])
 
