@@ -30,6 +30,7 @@ optimizer = None
 
 # https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html
 # https://medium.com/jun-devpblog/pytorch-2-a043b216fb29
+# https://www.neuralnet.ai/coding-a-deep-q-network-in-pytorch/
 
 def epsilon_greedy(state_vector, epsilon):
     """Returns an action selected by an epsilon-greedy exploration policy
